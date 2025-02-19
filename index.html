@@ -17,7 +17,6 @@
             width: 80%;
             margin: auto;
             padding: 20px;
-            display: none; /* Hide content initially */
         }
         h1 {
             background-color: #003366;
@@ -66,13 +65,6 @@
             height: auto;
             border-radius: 8px;
             margin-bottom: 10px;
-        }
-        .login-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
         }
     </style>
     <script>
@@ -336,21 +328,7 @@
             { productCode: "MC221", name: "Oldenburg Vineyards Rondekop Rhodium", region: "Stellenbosch", country: "South Africa", type: "Red", vintage: "2021", price: "VEP$195.00", description: "A rich, full-bodied red with intense dark fruit, tobacco, and earthy notes.", pairings: "Roast lamb, venison, or rich, creamy cheeses.", grapeVariety: "Red Blend" },
             { productCode: "MC222", name: "Oldenburg Vineyards Rondekop Stone Axe", region: "Stellenbosch", country: "South Africa", type: "Red", vintage: "2021", price: "VEP$165.00", description: "A powerful, structured red with notes of black fruit, spice, and a hint of oak.", pairings: "Grilled steak, braised beef, or aged cheddar.", grapeVariety: "Red Blend" },
         ];
-
-        function showContent() {
-            const username = prompt("Enter username:");
-            const password = prompt("Enter password:");
-
-            if (username === "Lawhill" && password === "lawhillfiji") {
-                document.querySelector('.container').style.display = 'block';
-                populateFilters();
-                searchWines();
-            } else {
-                alert("Incorrect username or password. Access denied.");
-                window.location.reload(); // Reload the page to prompt again
-            }
-        }
-
+        
         function populateFilters() {
             const categories = ["country", "region", "type", "price", "grapeVariety"];
             categories.forEach(category => {
@@ -359,7 +337,7 @@
                 select.innerHTML = `<option value="">All ${category}</option>` + uniqueValues.map(val => `<option value="${val}">${val}</option>`).join('');
             });
         }
-
+        
         function searchWines() {
             let input = document.getElementById("search").value.toLowerCase();
             let filters = {
@@ -369,6 +347,48 @@
                 price: document.getElementById("price").value,
                 grapeVariety: document.getElementById("grapeVariety").value
             };
-
+            
             let wineList = document.getElementById("wine-list");
-            wineList.innerHTML =
+            wineList.innerHTML = "";
+            
+            wines.filter(wine => 
+                Object.values(wine).some(val => val.toString().toLowerCase().includes(input)) &&
+                Object.entries(filters).every(([key, value]) => !value || wine[key] === value)
+            ).forEach(wine => {
+                let card = document.createElement("div");
+                card.className = "wine-card";
+                card.innerHTML = `
+                    <img src="${wine.image}" alt="${wine.name}" class="wine-image">
+                    <h3>${wine.name} (${wine.vintage})</h3>
+                    <p><strong>Region:</strong> ${wine.region}, ${wine.country}</p>
+                    <p><strong>Type:</strong> ${wine.type}</p>
+                    <p><strong>Price:</strong> ${wine.price}</p>
+                    <p><strong>Description:</strong> ${wine.description}</p>
+                    <p><strong>Pairings:</strong> ${wine.pairings}</p>
+                    <p><strong>Grape Variety:</strong> ${wine.grapeVariety}</p>
+                `;
+                wineList.appendChild(card);
+            });
+        }
+        
+        window.onload = function() {
+            populateFilters();
+            searchWines();
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Wine Catalog</h1>
+        <input type="text" id="search" onkeyup="searchWines()" placeholder="Search wines...">
+        <div class="filters">
+            <select id="country" onchange="searchWines()"></select>
+            <select id="region" onchange="searchWines()"></select>
+            <select id="type" onchange="searchWines()"></select>
+            <select id="price" onchange="searchWines()"></select>
+            <select id="grapeVariety" onchange="searchWines()"></select>
+        </div>
+        <div id="wine-list"></div>
+    </div>
+</body>
+</html>
