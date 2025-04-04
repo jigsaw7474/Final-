@@ -5,33 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wine Catalog</title>
     <style>
+        /* Basic CSS for styling */
         body {
-            font-family: 'Open Sans', sans-serif;
-            margin: 40px auto;
-            padding: 40px;
-            border: 1px solid #d1d1d1;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            box-sizing: border-box;
-            width: 80%;
-            background-color: #f8f8f8;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
             color: #333;
-            text-align: left;
+            transition: opacity 0.5s ease;
         }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
         .title-section {
             text-align: center;
             margin-bottom: 40px;
         }
+
         h1 {
             font-size: 2.5em;
             color: #2c3e50;
             margin-bottom: 20px;
             font-weight: 700;
         }
+
         img.logo {
             max-width: 10%;
             height: auto;
             margin-bottom: 10px;
         }
+
         input, select {
             width: calc(100% - 20px);
             padding: 12px;
@@ -43,40 +52,74 @@
             color: #444;
             background-color: #fff;
         }
+
         .filters {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
         }
+
         .filters select {
             width: 18%;
         }
+
         .wine-card {
-            background: white;
+            border: 1px solid #ddd;
             padding: 15px;
-            margin: 10px 0;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: left;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .wine-card:hover {
             transform: translateY(-5px) scale(1.02);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
-        .wine-card h3 {
-            margin: 5px 0;
-            color: #003366;
+
+        .wine-card img {
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 10px;
         }
-        .wine-card p {
-            margin: 3px 0;
+
+        .wine-card h3 {
+            margin-top: 0;
+            margin-bottom: 5px;
             color: #333;
         }
-        .wine-image {
-            width: 15%;
-            height: auto;
-            border-radius: 4px;
-            margin-bottom: 5px;
+
+        .wine-card p {
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .prices {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            font-weight: bold;
+            color: #555;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+            }
+
+            .filters select {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .wine-card {
+                width: 100%;
+            }
         }
     </style>
     <script>
