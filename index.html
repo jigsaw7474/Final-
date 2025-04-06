@@ -60,7 +60,7 @@
         }
 
         .filters select {
-            width: 18%;
+            width: 23%; /* Adjusted for uniformity */
         }
 
         .wine-card {
@@ -400,23 +400,10 @@
             });
         }
 
-        function searchWines() {
-            let input = document.getElementById("search").value.toLowerCase();
-            let filters = {
-                country: document.getElementById("country").value,
-                region: document.getElementById("region").value,
-                type: document.getElementById("type").value,
-                price: document.getElementById("price-input").value,
-                grapeVariety: document.getElementById("grape-input").value
-            };
-
-            let wineList = document.getElementById("wine-list");
-            wineList.innerHTML = "";
-
-            wines.filter(wine => 
-                Object.values(wine).some(val => val.toString().toLowerCase().includes(input)) &&
-                Object.entries(filters).every(([key, value]) => !value || (key === 'price' ? wine.price.includes(value) : wine[key] === value))
-            ).forEach(wine => {
+        function displayWines(wineList) {
+            let wineContainer = document.getElementById("wine-list");
+            wineContainer.innerHTML = "";
+            wineList.forEach(wine => {
                 let card = document.createElement("div");
                 card.className = "wine-card";
                 card.innerHTML = `
@@ -429,13 +416,31 @@
                     <p><strong>Pairings:</strong> ${wine.pairings}</p>
                     <p><strong>Grape Variety:</strong> ${wine.grapeVariety}</p>
                 `;
-                wineList.appendChild(card);
+                wineContainer.appendChild(card);
             });
+        }
+
+        function searchWines() {
+            let input = document.getElementById("search").value.toLowerCase();
+            let filters = {
+                country: document.getElementById("country").value,
+                region: document.getElementById("region").value,
+                type: document.getElementById("type").value,
+                price: document.getElementById("price-input").value,
+                grapeVariety: document.getElementById("grape-input").value
+            };
+
+            let filteredWines = wines.filter(wine => 
+                Object.values(wine).some(val => val.toString().toLowerCase().includes(input)) &&
+                Object.entries(filters).every(([key, value]) => !value || (key === 'price' ? wine.price.includes(value) : wine[key] === value))
+            );
+
+            displayWines(filteredWines);
         }
 
         window.onload = function() {
             populateFilters();
-            searchWines();
+            displayWines(wines.slice(0, 5)); // Show only the first 5 wines on load
         };
     </script>
 </head>
